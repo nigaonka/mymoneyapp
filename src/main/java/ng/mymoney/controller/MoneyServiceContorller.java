@@ -1,5 +1,6 @@
 package ng.mymoney.controller;
 
+import ng.mymoney.model.AccountTxn;
 import ng.mymoney.model.BankDetails;
 import ng.mymoney.model.Customer;
 import ng.mymoney.model.CustomerAccounts;
@@ -59,6 +60,18 @@ public class MoneyServiceContorller {
     public List<CustomerAccounts> getAllAccounts(){
         System.out.println("Retrieving all accounts ");
         return myMoneyService.getAllAccounts();
+    }
+
+    @RequestMapping ("/getAllTxn")
+    public List<AccountTxn> getAllTxn(){
+        return myMoneyService.findAllTxn();
+    }
+
+    @RequestMapping ("/createTxn")
+    public String createTxn(@RequestBody AccountTxn accountTxn){
+        System.out.println("Creating transaction ");
+        return myMoneyService.createTxn(accountTxn);
+
     }
 
 }

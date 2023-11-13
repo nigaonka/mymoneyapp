@@ -1,28 +1,28 @@
 package ng.mymoney.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "account_txn")
+public class AccountTxn {
 
-public class CustomerTxn {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
     int txnId;
-    int userId;
     int accountId;
     String txnType;
-    long amount;
+    double amount;
 
-    public CustomerTxn(int txnId, int userId, int accountId, String txnType, long amount) {
+    private AccountTxn(){
+
+    }
+
+    public AccountTxn(int txnId, int userId, int accountId, String txnType, long amount) {
         this.txnId = txnId;
-        this.userId = userId;
         this.accountId = accountId;
         this.txnType = txnType;
         this.amount = amount;
-    }
-
-    private CustomerTxn(){
-
     }
 
     public int getTxnId() {
@@ -31,14 +31,6 @@ public class CustomerTxn {
 
     public void setTxnId(int txnId) {
         this.txnId = txnId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public int getAccountId() {
@@ -57,11 +49,11 @@ public class CustomerTxn {
         this.txnType = txnType;
     }
 
-    public long getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 }

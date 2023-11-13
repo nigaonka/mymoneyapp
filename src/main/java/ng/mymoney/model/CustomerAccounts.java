@@ -13,7 +13,15 @@ public class CustomerAccounts {
     int accountNumber;
     int bankId;
     int customerId;
+    String accountType;
 
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
 
     private CustomerAccounts() {
 

@@ -1,8 +1,10 @@
 package ng.mymoney.service.impl;
 
+import ng.mymoney.model.AccountTxn;
 import ng.mymoney.model.BankDetails;
 import ng.mymoney.model.Customer;
 import ng.mymoney.model.CustomerAccounts;
+import ng.mymoney.repository.AccountTxnRepo;
 import ng.mymoney.repository.BankDetailsRepo;
 import ng.mymoney.repository.CustomerAccountsRepo;
 import ng.mymoney.repository.CustomerRepo;
@@ -18,11 +20,13 @@ public class MyMoneyServiceImpl implements MyMoneyService {
     BankDetailsRepo bankDetailsRepo;
     CustomerRepo customerRepo;
     CustomerAccountsRepo customerAccountsRepo;
+    AccountTxnRepo accountTxnRepo;
 
-    public MyMoneyServiceImpl(BankDetailsRepo bankDetailsRepo, CustomerRepo customerRepo, CustomerAccountsRepo custRepo) {
+    public MyMoneyServiceImpl(BankDetailsRepo bankDetailsRepo, CustomerRepo customerRepo, CustomerAccountsRepo custRepo, AccountTxnRepo txnRepo) {
         this.bankDetailsRepo = bankDetailsRepo;
         this.customerRepo = customerRepo;
         this.customerAccountsRepo = custRepo;
+        this.accountTxnRepo = txnRepo;
     }
 
     @Override
@@ -95,6 +99,21 @@ public class MyMoneyServiceImpl implements MyMoneyService {
 
     @Override
     public List<CustomerAccounts> getAllAccounts() {
+
         return customerAccountsRepo.findAll();
+    }
+
+    @Override
+    public List<AccountTxn> findAllTxn() {
+        System.out.println("Retrieving all transactions");
+        return accountTxnRepo.findAll();
+
+    }
+
+    @Override
+    public String createTxn(AccountTxn accountTxn) {
+        System.out.println("Creating account transactions ");
+        accountTxnRepo.save(accountTxn);
+        return "Transaction created successfully " + accountTxn.getTxnId();
     }
 }
