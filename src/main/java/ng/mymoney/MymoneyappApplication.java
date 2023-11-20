@@ -1,7 +1,3 @@
-/**
- * Application initializer
- */
-
 package ng.mymoney;
 
 import org.springframework.boot.SpringApplication;

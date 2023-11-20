@@ -2,8 +2,6 @@ package ng.mymoney.model;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
 @Table (name = "customer_info")
 public class Customer {
