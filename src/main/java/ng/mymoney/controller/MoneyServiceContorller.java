@@ -13,9 +13,9 @@ import java.util.List;
 @RequestMapping("/mymoney")
 public class MoneyServiceContorller {
 
-    MyMoneyService myMoneyService;
+    private MyMoneyService myMoneyService;
 
-    public MoneyServiceContorller(MyMoneyService myMoneyService) {
+    public void setMyMoneyService(MyMoneyService myMoneyService) {
         this.myMoneyService = myMoneyService;
     }
 

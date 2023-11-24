@@ -16,3 +16,19 @@ services:
       - 'MYSQL_USER=myuser'
     ports:
       - '3306'
+
+networks:
+ default:
+  name: moneyapp_default
+
+
+    mysql:
+      image: 'mysql:latest'
+      hostname: mysqldb
+      environment:
+      - 'MYSQL_DATABASE=mymoney_db'
+      - 'MYSQL_PASSWORD=secret'
+      - 'MYSQL_ROOT_PASSWORD=verysecret'
+      - 'MYSQL_USER=myuser'
+      ports:
+        - '3306'

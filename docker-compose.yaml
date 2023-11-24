@@ -188,4 +188,4 @@ services:
 
 networks:
   default:
-    name: mymoneyapp_default
+    name: moneyapp_default
