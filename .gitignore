@@ -39,3 +39,7 @@ out/
 /.gradle/vcs-1/
 /build/classes/
 /build/reports/
+/logs/
+/.gradle/8.4/
+/build/classes/
+/.gradle/8.4/

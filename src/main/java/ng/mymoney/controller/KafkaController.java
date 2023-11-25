@@ -13,6 +13,8 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -24,6 +26,8 @@ public class KafkaController {
     private MyTopicConsumer myTopicConsumer;
 
     private MessagingService messagingService;
+
+    private static final Logger logger = LoggerFactory.getLogger(KafkaController.class);
 
     @Autowired
     public void setMessagingService(MessagingService messagingService) {
@@ -41,6 +45,9 @@ public class KafkaController {
 
     }
 
+    /*
+    Sending kafka message through KafkaTemplate class
+     */
     @GetMapping("/produce")
     public String produce(@RequestParam String message) {
 
@@ -56,43 +63,6 @@ public class KafkaController {
 
     }
 
-    @GetMapping("/sendMessage")
-    public String sendMessage(@RequestParam String message) {
-
-        System.out.println("Sending message to kafka  ");
-
-        String bootstrapServers = "localhost:2181";
-
-        // create Producer properties
-        Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-
-        KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
-
-        // create a producer record
-        ProducerRecord<String, String> producerRecord =
-                new ProducerRecord<>("mytopic", "hello world");
-
-        try {
-            // send data - asynchronous
-            producer.send(producerRecord);
-
-            // flush data - synchronous
-            producer.flush();
-
-            // flush and close producer
-            producer.close();
-        }catch (Exception exception)
-        {
-            System.out.println("Got Exception in sending message ... " + exception.getMessage());
-            exception.printStackTrace();
-        }
-        return "Message set successfully ";
-
-    }
-
     @GetMapping("/getMessage")
     public List<String> getMessages() {
         System.out.println(" ====== Consuming the message ======= ");
@@ -101,7 +71,9 @@ public class KafkaController {
 
     @GetMapping ("/pushMessage")
     public String pushMessage(@RequestParam String message){
-        log.info("Cntroller: pushMessage " + message);
+
+        log.info("Info: Cntroller: pushMessage " + message);
+        log.debug(" Debug: Cntroller: pushMessage " + message);
         System.out.println("Cntroller: pushMessage " + message);
         String uniqueID = UUID.randomUUID().toString();
         try{
@@ -113,6 +85,4 @@ public class KafkaController {
         }
         return "Message sent to kafka";
     }
-
-
 }
