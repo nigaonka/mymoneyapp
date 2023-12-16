@@ -1,10 +1,13 @@
 package ng.mymoney.controller;
 
+import ng.mymoney.MymoneyappApplication;
 import ng.mymoney.model.AccountTxn;
 import ng.mymoney.model.BankDetails;
 import ng.mymoney.model.Customer;
 import ng.mymoney.model.CustomerAccounts;
 import ng.mymoney.service.MyMoneyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.List;
 @RequestMapping("/mymoney")
 public class MoneyServiceContorller {
 
+    private static final Logger log = LoggerFactory.getLogger(MoneyServiceContorller.class);
     private MyMoneyService myMoneyService;
 
     public void setMyMoneyService(MyMoneyService myMoneyService) {
@@ -22,13 +26,13 @@ public class MoneyServiceContorller {
     @GetMapping("/showCustomers")
     public List<Customer> getAllCustomers()
     {
-        System.out.println("Getting all customers");
+        log.info("Getting all customers...");
         return myMoneyService.getAllCustomers();
     }
 
     @GetMapping("/showBanks")
     public List<BankDetails> getAllBanks(){
-        System.out.println("Getting all banks from system");
+        log.info("Getting all banks from system");
         return myMoneyService.getAllBanks();
 
     }
@@ -47,7 +51,7 @@ public class MoneyServiceContorller {
 
     @RequestMapping ("/createAccount")
     public String createCustomerAccount(@RequestBody CustomerAccounts customerAccounts)  {
-        System.out.println("Account No " + customerAccounts.getAccountNumber() + " BankId " + customerAccounts.getBankId() +" cust id " + customerAccounts.getCustomerId());
+        log.info("Account No " + customerAccounts.getAccountNumber() + " BankId " + customerAccounts.getBankId() +" cust id " + customerAccounts.getCustomerId());
         if(customerAccounts.getAccountNumber() <=0 || customerAccounts.getCustomerId()<=0 || customerAccounts.getBankId()<=0 ) {
             return "Error: Invalid input ";
         }else {
@@ -58,7 +62,7 @@ public class MoneyServiceContorller {
 
     @RequestMapping ("/getAllAccounts")
     public List<CustomerAccounts> getAllAccounts(){
-        System.out.println("Retrieving all accounts ");
+        log.info("Retrieving all accounts ");
         return myMoneyService.getAllAccounts();
     }
 
@@ -69,7 +73,7 @@ public class MoneyServiceContorller {
 
     @RequestMapping ("/createTxn")
     public String createTxn(@RequestBody AccountTxn accountTxn){
-        System.out.println("Creating transaction ");
+        log.info("Creating transaction ");
         return myMoneyService.createTxn(accountTxn);
 
     }

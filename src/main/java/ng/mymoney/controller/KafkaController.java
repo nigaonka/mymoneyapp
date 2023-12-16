@@ -1,14 +1,12 @@
 package ng.mymoney.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import ng.mymoney.model.AccountTxn;
 import ng.mymoney.service.MessagingService;
 import ng.mymoney.service.MyTopicConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -45,42 +43,28 @@ public class KafkaController {
 
     }
 
-    /*
-    Sending kafka message through KafkaTemplate class
-     */
-    @GetMapping("/produce")
-    public String produce(@RequestParam String message) {
-
-        try {
-            System.out.println("============  Producing message ==========");
-            template.send("mytopic", message);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-        return "Message sent successfully ";
-
-    }
 
     @GetMapping("/getMessage")
     public List<String> getMessages() {
-        System.out.println(" ====== Consuming the message ======= ");
+        log.info(" ====== Consuming the message ======= ");
         return myTopicConsumer.getMessages();
     }
 
-    @GetMapping ("/pushMessage")
-    public String pushMessage(@RequestParam String message){
+    @PostMapping ("/publishMessage")
+    public String publishMessage(@RequestBody AccountTxn accountTxn){
 
-        log.info("Info: Cntroller: pushMessage " + message);
-        log.debug(" Debug: Cntroller: pushMessage " + message);
-        System.out.println("Cntroller: pushMessage " + message);
+        log.info("Controller: publishMessage " );
         String uniqueID = UUID.randomUUID().toString();
+        log.info("Payload Txn Id {},  Account Id {}, Txn Type {}, Amount {} ", accountTxn.getTxnId(), accountTxn.getAccountId(), accountTxn.getTxnType(), accountTxn.getAmount());
+
         try{
-            messagingService.pushMessageToKafka(uniqueID,message);
+            if (accountTxn.getTxnId() > 0 && accountTxn.getAccountId() > 0 && null != accountTxn.getTxnType() && accountTxn.getAmount() > 0) {
+                log.info("Publishing message");
+                messagingService.publishMessageToKafka(accountTxn.getTxnId()+"", accountTxn);
+            }
         }catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
             return "Error in sending message to kafka";
         }
         return "Message sent to kafka";

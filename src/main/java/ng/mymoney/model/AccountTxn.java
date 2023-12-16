@@ -2,6 +2,8 @@ package ng.mymoney.model;
 
 
 import jakarta.persistence.*;
+import org.json.JSONObject;
+
 
 @Entity
 @Table(name = "account_txn")
@@ -55,5 +57,14 @@ public class AccountTxn {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String toJson() {
+        JSONObject obj = new JSONObject();
+        obj.put("txnId", txnId);
+        obj.put("accountId", accountId);
+        obj.put("txnType" , txnType);
+        obj.put("amount", amount);
+        return obj.toString();
     }
 }

@@ -24,7 +24,6 @@ import java.util.Properties;
 public class KafkaProducerConfig implements ApplicationListener<ContextRefreshedEvent> {
     private ApplicationContext applicationContext;
 
-    private static final String KAFKA_BROKER = "localhost:9092" ;
 
     public KafkaProducerConfig (ApplicationContext applicationContext){
         this.applicationContext=applicationContext;
@@ -36,7 +35,7 @@ public class KafkaProducerConfig implements ApplicationListener<ContextRefreshed
     @Bean
     public Map<String, Object> producerConfigurations() {
         Map<String, Object> configurations = new HashMap<>();
-        configurations.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_BROKER);
+        configurations.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, DynConfigCommonUtils.getKafkaEndpoint());
 
         configurations.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configurations.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -50,7 +49,7 @@ public class KafkaProducerConfig implements ApplicationListener<ContextRefreshed
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        System.out.println("onApplicationEvent ...");
+        log.info("Creating producer topic");
         createTopicProducer();
     }
 
@@ -63,7 +62,6 @@ public class KafkaProducerConfig implements ApplicationListener<ContextRefreshed
     public void createTopicProducer(){
         destroyTopicProducer();
         log.info("Creating producer to send log message...");
-        log.trace("inside createTopicProducer");
         var producer = createProducer();
         var registry = (DefaultSingletonBeanRegistry) applicationContext.getAutowireCapableBeanFactory();
         registry.registerSingleton("KafkaProducer", producer);
@@ -78,7 +76,7 @@ public class KafkaProducerConfig implements ApplicationListener<ContextRefreshed
         props.put(ProducerConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE));
         props.put(ProducerConfig.ACKS_CONFIG, "all");
         props.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "1");
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_BROKER);
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, DynConfigCommonUtils.getKafkaEndpoint());
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
                 "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,

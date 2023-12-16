@@ -1,7 +1,11 @@
 package ng.mymoney.util;
 
+import lombok.extern.slf4j.Slf4j;
+import ng.mymoney.service.impl.MessagingServiceImpl;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -12,10 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@Slf4j
 public class ConsumerConfiguration {
 
-    private static final String KAFKA_BROKER = "localhost:9092";
-    private static final String GROUP_ID = "kafka-sandbox";
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigurations());
@@ -23,10 +26,13 @@ public class ConsumerConfiguration {
     @Bean
     public Map<String, Object> consumerConfigurations() {
         Map<String, Object> configurations = new HashMap<>();
-        configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_BROKER);
-        configurations.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
+        log.info("Setting kafka properties: Topic name: {}, Endpoint: {}", DynConfigCommonUtils.getTopicName() , DynConfigCommonUtils.getKafkaEndpoint());
+
+        configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, DynConfigCommonUtils.getKafkaEndpoint());
+        configurations.put(ConsumerConfig.GROUP_ID_CONFIG, DynConfigCommonUtils.getGroupId());
         configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        configurations.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return configurations;
     }
     @Bean

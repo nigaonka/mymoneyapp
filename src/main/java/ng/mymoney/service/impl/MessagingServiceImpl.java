@@ -1,19 +1,22 @@
 package ng.mymoney.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import ng.mymoney.model.AccountTxn;
 import ng.mymoney.service.MessagingService;
+import ng.mymoney.util.DynConfigCommonUtils;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 @Slf4j
 public class MessagingServiceImpl implements MessagingService {
 
+    private static final Logger logger = LoggerFactory.getLogger(MessagingServiceImpl.class);
     private KafkaProducer producer;
     private ApplicationContext context;
 
@@ -29,18 +32,19 @@ public class MessagingServiceImpl implements MessagingService {
 
 
     @Override
-    public void pushMessageToKafka(String txnId, String message) {
+    public void publishMessageToKafka(String key, AccountTxn accountTxn) {
 
-        if (null != message) {
+        log.info("Publishing message to {} ", DynConfigCommonUtils.getTopicName());
+        if (null != key) {
             this.producer = context.getBean("KafkaProducer", KafkaProducer.class);
-            var producerRecord = new ProducerRecord<>("mytopic", txnId, message.getBytes());
+            var producerRecord = new ProducerRecord<>(DynConfigCommonUtils.getTopicName(), key, accountTxn.toJson().getBytes());
 
             try {
-            producer.send(producerRecord);
-            }catch (Exception e)
-            {
-                e.printStackTrace();
-                System.out.println("Got exception in sending message to kafka");
+                log.info("Record published to topic");
+                producer.send(producerRecord);
+            } catch (Exception e) {
+
+                log.error("Exception in sending message to kafka " + e.getMessage());
             }
         }
 

@@ -28,13 +28,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.apache.kafka:kafka-streams'
 	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.json:json:20230618'
 	compileOnly 'org.projectlombok:lombok'
+	implementation group: 'com.netflix.archaius', name: 'archaius-core', version: '0.1.4'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	compileOnly 'org.json:json:20141113'
 	//developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	implementation 'org.apache.httpcomponents:httpcore:4.4.1'
+	implementation 'org.apache.httpcomponents:httpclient:4.5'
 }
 
 tasks.named('bootBuildImage') {

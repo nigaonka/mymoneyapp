@@ -1,5 +1,6 @@
 package ng.mymoney.service.impl;
 
+import ng.mymoney.MymoneyappApplication;
 import ng.mymoney.model.AccountTxn;
 import ng.mymoney.model.BankDetails;
 import ng.mymoney.model.Customer;
@@ -10,6 +11,8 @@ import ng.mymoney.repository.CustomerAccountsRepo;
 import ng.mymoney.repository.CustomerRepo;
 import ng.mymoney.service.MyMoneyService;
 import ng.mymoney.util.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +25,7 @@ public class MyMoneyServiceImpl implements MyMoneyService {
     CustomerAccountsRepo customerAccountsRepo;
     AccountTxnRepo accountTxnRepo;
 
+    private static final Logger log = LoggerFactory.getLogger(MyMoneyServiceImpl.class);
     public MyMoneyServiceImpl(BankDetailsRepo bankDetailsRepo, CustomerRepo customerRepo, CustomerAccountsRepo custRepo, AccountTxnRepo txnRepo) {
         this.bankDetailsRepo = bankDetailsRepo;
         this.customerRepo = customerRepo;
@@ -54,14 +58,14 @@ public class MyMoneyServiceImpl implements MyMoneyService {
 
     @Override
     public List<BankDetails> getAllBanks() {
-        System.out.println("Returning all banks");
+        log.info("Returning all banks");
         return bankDetailsRepo.findAll();
     }
 
     @Override
     public List<Customer> getAllCustomers() {
 
-        System.out.println("Returning all customers");
+        log.info("Returning all customers");
         return customerRepo.findAll();
     }
 
@@ -92,7 +96,7 @@ public class MyMoneyServiceImpl implements MyMoneyService {
 
     @Override
     public String createCustomerAccounts(CustomerAccounts customerAccounts) {
-        System.out.println("Creating customer accounts");
+        log.info("Creating customer accounts");
             customerAccountsRepo.save(customerAccounts);
             return "Customer account number " + customerAccounts.getAccountNumber() + " created successfully";
     }
@@ -105,14 +109,14 @@ public class MyMoneyServiceImpl implements MyMoneyService {
 
     @Override
     public List<AccountTxn> findAllTxn() {
-        System.out.println("Retrieving all transactions");
+        log.info("Retrieving all transactions");
         return accountTxnRepo.findAll();
 
     }
 
     @Override
     public String createTxn(AccountTxn accountTxn) {
-        System.out.println("Creating account transactions ");
+        log.info("Creating account transactions ");
         accountTxnRepo.save(accountTxn);
         return "Transaction created successfully " + accountTxn.getTxnId();
     }
