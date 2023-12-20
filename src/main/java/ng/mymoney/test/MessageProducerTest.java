@@ -34,8 +34,6 @@ public class MessageProducerTest {
                 jsonObject.put("txnType", "DR");
                 jsonObject.put("amount", "1234"+i);
 
-                //String payload = new AccountTxn(1, 2, 989, "DR", 23453);
-                System.out.println("Entity ready");
                 StringEntity entity = new StringEntity(jsonObject.toString());
                 entity.setContentType("application/json");
                 post.setEntity(entity);

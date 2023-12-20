@@ -1,11 +1,8 @@
 package ng.mymoney.util;
 
 import lombok.extern.slf4j.Slf4j;
-import ng.mymoney.service.impl.MessagingServiceImpl;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;

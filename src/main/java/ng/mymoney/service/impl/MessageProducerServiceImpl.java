@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class MessagingServiceImpl implements MessagingService {
+public class MessageProducerServiceImpl implements MessagingService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MessagingServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageProducerServiceImpl.class);
     private KafkaProducer producer;
     private ApplicationContext context;
 
@@ -30,20 +30,19 @@ public class MessagingServiceImpl implements MessagingService {
         this.context = context;
     }
 
-
+    /*
+    Processing the message sent by controller
+     */
     @Override
     public void publishMessageToKafka(String key, AccountTxn accountTxn) {
-
-        log.info("Publishing message to {} ", DynConfigCommonUtils.getTopicName());
         if (null != key) {
             this.producer = context.getBean("KafkaProducer", KafkaProducer.class);
             var producerRecord = new ProducerRecord<>(DynConfigCommonUtils.getTopicName(), key, accountTxn.toJson().getBytes());
 
             try {
-                log.info("Record published to topic");
+                log.info("Pushing message to topic {}", DynConfigCommonUtils.getTopicName());
                 producer.send(producerRecord);
             } catch (Exception e) {
-
                 log.error("Exception in sending message to kafka " + e.getMessage());
             }
         }
