@@ -39,6 +39,7 @@ public class KafkaController {
         String uniqueID = UUID.randomUUID().toString();
         try {
             if (accountTxn.getTxnId() > 0 && accountTxn.getAccountId() > 0 && null != accountTxn.getTxnType() && accountTxn.getAmount() > 0) {
+                System.out.println("PUblishing message ");
                 log.info("Publishing message to Service layer");
                 log.info("Txn Id {},  Account Id {}, Txn Type {}, Amount {} ", accountTxn.getTxnId(), accountTxn.getAccountId(), accountTxn.getTxnType(), accountTxn.getAmount());
                 messagingService.publishMessageToKafka(uniqueID + "", accountTxn);

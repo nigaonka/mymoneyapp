@@ -25,7 +25,7 @@ public class ConsumerConfiguration {
         Map<String, Object> configurations = new HashMap<>();
         log.info("Setting kafka properties: Topic name: {}, Endpoint: {}", DynConfigCommonUtils.getTopicName() , DynConfigCommonUtils.getKafkaEndpoint());
 
-        configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, DynConfigCommonUtils.getKafkaEndpoint());
+        configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker:29092");
         configurations.put(ConsumerConfig.GROUP_ID_CONFIG, DynConfigCommonUtils.getGroupId());
         configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);

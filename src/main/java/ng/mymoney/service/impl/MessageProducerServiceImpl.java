@@ -3,6 +3,7 @@ package ng.mymoney.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import ng.mymoney.model.AccountTxn;
 import ng.mymoney.service.MessagingService;
+import ng.mymoney.util.ApplicationConfiguration;
 import ng.mymoney.util.DynConfigCommonUtils;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -20,6 +21,8 @@ public class MessageProducerServiceImpl implements MessagingService {
     private KafkaProducer producer;
     private ApplicationContext context;
 
+    private ApplicationConfiguration configuration;
+
     @Autowired
     public void setProducer(KafkaProducer<String, byte[]> producer) {
         this.producer = producer;
@@ -30,19 +33,32 @@ public class MessageProducerServiceImpl implements MessagingService {
         this.context = context;
     }
 
+    @Autowired
+    public void setAppConfiguration(ApplicationConfiguration configuration){
+        this.configuration=configuration;
+    }
+
+
+
     /*
     Processing the message sent by controller
      */
     @Override
     public void publishMessageToKafka(String key, AccountTxn accountTxn) {
         if (null != key) {
+
+
             this.producer = context.getBean("KafkaProducer", KafkaProducer.class);
             var producerRecord = new ProducerRecord<>(DynConfigCommonUtils.getTopicName(), key, accountTxn.toJson().getBytes());
 
             try {
+                System.out.println("Property load " + configuration.getProperty());
+
+                System.out.println("Pushing message to topic "+ DynConfigCommonUtils.getKafkaEndpoint()+"  " + DynConfigCommonUtils.getTopicName());
                 log.info("Pushing message to topic {}", DynConfigCommonUtils.getTopicName());
                 producer.send(producerRecord);
             } catch (Exception e) {
+                e.printStackTrace();
                 log.error("Exception in sending message to kafka " + e.getMessage());
             }
         }

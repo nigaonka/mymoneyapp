@@ -34,12 +34,18 @@ public class KafkaProducerConfig implements ApplicationListener<ContextRefreshed
     }
     @Bean
     public Map<String, Object> producerConfigurations() {
-        Map<String, Object> configurations = new HashMap<>();
-        configurations.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, DynConfigCommonUtils.getKafkaEndpoint());
+        try {
+            Map<String, Object> configurations = new HashMap<>();
+            configurations.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker:29092");
 
-        configurations.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configurations.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        return configurations;
+            configurations.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            configurations.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            return configurations;
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return null;
+        }
+
     }
 
     @Bean

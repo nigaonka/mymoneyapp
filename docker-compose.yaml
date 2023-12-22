@@ -19,6 +19,7 @@ services:
       - zookeeper
     ports:
       - "9092:9092"
+      - "29092:29092"
       - "9101:9101"
     environment:
       KAFKA_BROKER_ID: 1
@@ -176,16 +177,27 @@ services:
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
 
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    - MYSQL_DATABASE=mymoney_db
+    volumes:
+     - "./conf.d:/etc/mysql/conf.d:ro"
+
   my-app:
     image: mymoneyapp
     container_name: mymoneyapp
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: 'broker:29092'
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mymoney_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
     ports:
       - "8080:8080"
     depends_on:
       - broker
-
-networks:
-  default:
-    name: moneyapp_default
+      - mysql
