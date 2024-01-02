@@ -47,7 +47,7 @@ public class KafkaStreamConfiguration {
 
     @Bean
     public NewTopic inputKafkaTopic() {
-        return new NewTopic(DynConfigCommonUtils.getTopicName(), 1, (short) 1);
+        return new NewTopic("usertopic", 1, (short) 1);
     }
 
     @Bean

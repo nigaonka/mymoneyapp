@@ -1,0 +1,4 @@
+
+curl -H "Content-Type: application/json" -X POST -d '{"txnId":"2345", "accountId":"12654", "txnType":"CR", "amount":"1345"}' http://localhost:8080/kafka/publishMessage
+
+

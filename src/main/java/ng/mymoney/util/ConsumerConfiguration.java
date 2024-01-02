@@ -3,6 +3,7 @@ package ng.mymoney.util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.hibernate.cache.CacheException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -22,15 +23,22 @@ public class ConsumerConfiguration {
     }
     @Bean
     public Map<String, Object> consumerConfigurations() {
-        Map<String, Object> configurations = new HashMap<>();
-        log.info("Setting kafka properties: Topic name: {}, Endpoint: {}", DynConfigCommonUtils.getTopicName() , DynConfigCommonUtils.getKafkaEndpoint());
+        try {
+            Map<String, Object> configurations = new HashMap<>();
+            System.out.println("consumerConfigurations ->>");
+            log.info("Setting kafka properties: Topic name: {}, Endpoint: {}", DynConfigCommonUtils.getTopicName(), DynConfigCommonUtils.getKafkaEndpoint());
 
-        configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker:29092");
-        configurations.put(ConsumerConfig.GROUP_ID_CONFIG, DynConfigCommonUtils.getGroupId());
-        configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configurations.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        return configurations;
+            configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker:29092");
+            configurations.put(ConsumerConfig.GROUP_ID_CONFIG, DynConfigCommonUtils.getGroupId());
+            configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+            configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+            configurations.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+            return configurations;
+        }catch (CacheException exception){
+            exception.printStackTrace();
+            return null;
+        }
+
     }
     @Bean
     ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {

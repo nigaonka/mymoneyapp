@@ -12,7 +12,7 @@ WORKDIR /home/gradle/src
 
 #FROM openjdk:8-jre-slim
 
-#EXPOSE 8080
+EXPOSE 8080
 
 COPY build/libs/*.jar mymoneyapp.jar
 

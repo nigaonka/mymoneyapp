@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mymoneyapp
+  namespace: developement
+  labels:
+    app: mymoneyapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mymoneyapp
+  template:
+    metadata:
+      labels:
+        app: mymoneyapp
+    spec:
+      containers:
+        - name: mymoneyapp
+          image: nityanandgaonkar/ngaonkar:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: regcred
+
+
