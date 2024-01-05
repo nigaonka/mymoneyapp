@@ -45,3 +45,7 @@ out/
 /.gradle/8.4/
 /build/classes/
 /.gradle/
+
+/kafka-setup/tmp/kafka-data/**
+/kafka-setup/**
+
