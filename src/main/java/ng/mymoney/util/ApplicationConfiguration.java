@@ -14,7 +14,6 @@ public class ApplicationConfiguration {
 
     public String getProperty() {
         System.out.println("ApplicationConfiguration >> getProperty");
-
         return env.getProperty("logging.file");
     }
 

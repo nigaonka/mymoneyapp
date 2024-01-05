@@ -23,8 +23,6 @@ public class TxnStreamProcessor implements Processor<String, byte[]>, Punctuator
 
     @Override
     public void init(ProcessorContext context) {
-        System.out.println(" Txn Processor ");
-        log.info(" Init Setting the context  ");
         this.context = context;
     }
 
@@ -37,7 +35,6 @@ public class TxnStreamProcessor implements Processor<String, byte[]>, Punctuator
             objectMapper = new ObjectMapper();
             var messageDto = objectMapper.readValue(value, AccountTxn.class);
             log.info("Message consumed and processed: {}, {}, {},  {}", messageDto.getTxnId(), messageDto.getAccountId(), messageDto.getAmount(), messageDto.getTxnType());
-            System.out.println("Tranaction processor " + messageDto.getTxnId());
         } catch (Exception exception) {
             exception.printStackTrace();
             log.error(exception.getMessage());

@@ -3,14 +3,16 @@ package ng.mymoney.util;
 import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.config.DynamicStringProperty;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 
 @Slf4j
+@Configuration
 public class DynConfigCommonUtils {
 
     public static void initializeDynConfig() {
 
         DynamicStringProperty kafkaEndpointProp = DynamicPropertyFactory.getInstance()
-                .getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "broker:29092");
+                .getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "kafka:29092");
         DynamicStringProperty topicName = DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.TOPIC_NAME.getValue(), "usertopic");
 
         DynamicStringProperty groupId = DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.KAFKA_GROUPID.getValue(), "kafka_sandbox");
@@ -20,7 +22,7 @@ public class DynConfigCommonUtils {
     }
 
     public static String getKafkaEndpoint() {
-        return DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "broker:29092").getValue();
+        return DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "kafka:29092").getValue();
     }
 
     public static String getTopicName() {

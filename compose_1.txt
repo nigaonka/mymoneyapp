@@ -32,3 +32,30 @@ networks:
       - 'MYSQL_USER=myuser'
       ports:
         - '3306'
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    - MYSQL_DATABASE=mymoney_db
+    volumes:
+     - "./conf.d:/etc/mysql/conf.d:ro"
+
+          my-app:
+            image: mymoneyapp
+            container_name: mymoneyapp
+            environment:
+              SPRING_KAFKA_BOOTSTRAPSERVERS: 'broker:29092'
+              SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mymoney_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+              SPRING_DATASOURCE_USERNAME: root
+              SPRING_DATASOURCE_PASSWORD: root
+            volumes:
+              - ./logs:/logs
+            ports:
+              - "8080:8080"
+            depends_on:
+              - broker
+              - mysql

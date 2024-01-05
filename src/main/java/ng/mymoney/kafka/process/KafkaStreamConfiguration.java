@@ -37,11 +37,10 @@ public class KafkaStreamConfiguration {
     @Bean
     public KafkaAdmin kafkaAdmin() {
 
-        System.out.println("Kafka Admin");
         Map<String, Object> configs = new HashMap<>();
-        //String brokerEnv = System.getenv("SPRING_KAFKA_BOOTSTRAPSERVERS");
+        String brokerEnv = System.getenv("SPRING_KAFKA_BOOTSTRAPSERVERS");
         //configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG,  brokerEnv);
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG,  "broker:29092");
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, DynConfigCommonUtils.getKafkaEndpoint());
         return new KafkaAdmin(configs);
     }
 
@@ -54,9 +53,9 @@ public class KafkaStreamConfiguration {
     @Qualifier("streamsConfig")
     public Properties streamsConfig(Environment env) {
 
-      //  String brokerEnv = System.getenv("SPRING_KAFKA_BOOTSTRAPSERVERS");
+        //  String brokerEnv = System.getenv("SPRING_KAFKA_BOOTSTRAPSERVERS");
         Properties props = new Properties();
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "broker:29092");
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, DynConfigCommonUtils.getKafkaEndpoint());
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, DynConfigCommonUtils.getStreamAppId());
         props.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 1);
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
@@ -74,7 +73,6 @@ public class KafkaStreamConfiguration {
         props.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, 5);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, DynConfigCommonUtils.getConsumerGroupId());
 
-
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
         //Increasing to 20 MB for each record in error state store
 
@@ -84,21 +82,20 @@ public class KafkaStreamConfiguration {
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1);
         props.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, CooperativeStickyAssignor.class.getName());
         props.put(ConsumerConfig.GROUP_INSTANCE_ID_CONFIG, ("SchedulerCoordinator-" + UUID.randomUUID()));
-        log.info("Kafka Pros are set {} ", props.toString());
-        System.out.println("Kafka Pros are set  "+ props.toString());
+        log.info("KafkaStream Pros are set {} ", props.toString());
         return props;
     }
 
 
     @Bean(destroyMethod = "stop")
     @DependsOn({"inputKafkaTopic"})
-    public KafkaStreamProcessor kafkaStreamProcessor (
+    public KafkaStreamProcessor kafkaStreamProcessor(
             @Qualifier("streamsConfig") Properties streamsProperties,
             @Qualifier("processorSupplier") ProcessorSupplier<String, byte[]> processorSupplier) {
-            var streamProcessor = new KafkaStreamProcessor(streamsProperties, processorSupplier);
-            System.out.println("Starting stream processor ");
-            streamProcessor.initializeProcessor();
-            return streamProcessor;
+        var streamProcessor = new KafkaStreamProcessor(streamsProperties, processorSupplier);
+        System.out.println("Starting stream processor ");
+        streamProcessor.initializeProcessor();
+        return streamProcessor;
 
     }
 

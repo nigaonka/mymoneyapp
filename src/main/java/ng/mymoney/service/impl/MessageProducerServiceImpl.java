@@ -54,7 +54,7 @@ public class MessageProducerServiceImpl implements MessagingService {
             try {
                 System.out.println("Property load " + configuration.getProperty());
 
-                System.out.println("Pushing message to topic "+ DynConfigCommonUtils.getKafkaEndpoint()+"  " + DynConfigCommonUtils.getTopicName());
+                System.out.println("Pushing message to "+ DynConfigCommonUtils.getKafkaEndpoint()+" :: " + DynConfigCommonUtils.getTopicName());
                 log.info("Pushing message to topic {}", DynConfigCommonUtils.getTopicName());
                 producer.send(producerRecord);
             } catch (Exception e) {

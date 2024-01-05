@@ -36,14 +36,19 @@ public class KafkaStreamProcessor {
 
 
     public void initializeProcessor() {
-        Topology topology = new Topology();
 
-        topology.addSource(INPUT_TOPIC_SOURCE, inputTopic)
-                .addProcessor(NODE_PROCESSOR, processorSupplier, INPUT_TOPIC_SOURCE);
-        streams = new KafkaStreams(topology, streamingProperties);
-        handleClosingException();
-        streams.start();
-        log.info("KStream processor started");
+        try {
+            Topology topology = new Topology();
+
+            topology.addSource(INPUT_TOPIC_SOURCE, inputTopic)
+                    .addProcessor(NODE_PROCESSOR, processorSupplier, INPUT_TOPIC_SOURCE);
+            streams = new KafkaStreams(topology, streamingProperties);
+            handleClosingException();
+            streams.start();
+            log.info("KStream processor started");
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
     }
 
     private void handleClosingException() {

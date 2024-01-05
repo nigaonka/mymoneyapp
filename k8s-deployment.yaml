@@ -19,10 +19,15 @@ spec:
       containers:
         - name: mymoneyapp
           image: nityanandgaonkar/ngaonkar:latest
-          imagePullPolicy: IfNotPresent
+          env:
+            - name: SPRING_KAFKA_BOOTSTRAPSERVERS
+              value: "localhost:9092"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql:3306/mymoney_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "root"
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
-      imagePullSecrets:
-        - name: regcred
-
-

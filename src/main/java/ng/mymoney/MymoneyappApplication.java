@@ -26,8 +26,10 @@ public class MymoneyappApplication {
 					System.getenv(PROPERTIES_FILE)));
 		}
 		System.out.println("Property file loaded :  " + DynConfigCommonUtils.getGroupId());
+		log.info("Properties file loaded ");
 		SpringApplication.run(MymoneyappApplication.class, args);
-		System.out.println("Application Started .... ");
+		log.info(" ======= Application initialized ====== ");
+		System.out.println(" ======= Application initialized ====== ");
 
 	}catch (Exception exception)
 	{
