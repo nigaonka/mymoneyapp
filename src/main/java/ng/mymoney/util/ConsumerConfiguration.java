@@ -26,7 +26,7 @@ public class ConsumerConfiguration {
         try {
             Map<String, Object> configurations = new HashMap<>();
 
-            log.info("Setting kafka properties: Topic name: {}, Endpoint: {}", DynConfigCommonUtils.getTopicName(), DynConfigCommonUtils.getKafkaEndpoint());
+            log.info("Setting kafka properties: Topic name: {}, Endpoint: {}", DynConfigCommonUtils.getAccTopicName(), DynConfigCommonUtils.getKafkaEndpoint());
 
             configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, DynConfigCommonUtils.getKafkaEndpoint());
             configurations.put(ConsumerConfig.GROUP_ID_CONFIG, DynConfigCommonUtils.getGroupId());

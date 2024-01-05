@@ -4,6 +4,6 @@ import ng.mymoney.model.AccountTxn;
 
 public interface MessagingService {
 
-    public void publishMessageToKafka(String key, AccountTxn accountTxn);
+    public void publishMessageToKafka(Object object);
 
 }

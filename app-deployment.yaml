@@ -44,6 +44,10 @@ spec:
 
             - name: SPRING_KAFKA_BOOTSTRAPSERVERS
               value: "kafka:29092"
+            - name: ACC_TOPIC_NAME
+              value: "accounttopic"
+            - name: TXN_TOPIC_NAME
+              value: "txntopic"
             - name: PROPERTIES_FILE
               value: "application.properties"
 

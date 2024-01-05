@@ -8,6 +8,7 @@ import ng.mymoney.model.CustomerAccounts;
 import ng.mymoney.service.MyMoneyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class MoneyServiceContorller {
     private static final Logger log = LoggerFactory.getLogger(MoneyServiceContorller.class);
     private MyMoneyService myMoneyService;
 
+    @Autowired
     public void setMyMoneyService(MyMoneyService myMoneyService) {
         this.myMoneyService = myMoneyService;
     }
@@ -45,8 +47,7 @@ public class MoneyServiceContorller {
     @PostMapping("/createBank")
     public String createBank(@RequestBody BankDetails bankDetails){
 
-        myMoneyService.createBank(bankDetails);
-        return "Bank details created successfully";
+        return myMoneyService.createBank(bankDetails);
     }
 
     @RequestMapping ("/createAccount")

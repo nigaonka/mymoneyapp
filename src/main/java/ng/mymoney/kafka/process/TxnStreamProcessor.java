@@ -33,8 +33,9 @@ public class TxnStreamProcessor implements Processor<String, byte[]>, Punctuator
             String strVal = new String(value);
             log.info("Message consumed by kstream: key {}, Value {}", key, strVal);
             objectMapper = new ObjectMapper();
+
             var messageDto = objectMapper.readValue(value, AccountTxn.class);
-            log.info("Message consumed and processed: {}, {}, {},  {}", messageDto.getTxnId(), messageDto.getAccountId(), messageDto.getAmount(), messageDto.getTxnType());
+            //log.info("Message consumed and processed: {}, {}, {},  {}", messageDto.getTxnId(), messageDto.getAccountId(), messageDto.getAmount(), messageDto.getTxnType());
         } catch (Exception exception) {
             exception.printStackTrace();
             log.error(exception.getMessage());

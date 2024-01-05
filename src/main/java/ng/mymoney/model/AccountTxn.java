@@ -12,7 +12,8 @@ public class AccountTxn {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     int txnId;
-    int accountId;
+
+    int accountNumber;
     String txnType;
     double amount;
 
@@ -20,9 +21,9 @@ public class AccountTxn {
 
     }
 
-    public AccountTxn(int txnId, int userId, int accountId, String txnType, long amount) {
+    public AccountTxn(int txnId, int userId, int accountNumber, String txnType, long amount) {
         this.txnId = txnId;
-        this.accountId = accountId;
+
         this.txnType = txnType;
         this.amount = amount;
     }
@@ -35,13 +36,6 @@ public class AccountTxn {
         this.txnId = txnId;
     }
 
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
-    }
 
     public String getTxnType() {
         return txnType;
@@ -59,10 +53,19 @@ public class AccountTxn {
         this.amount = amount;
     }
 
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
     public String toJson() {
         JSONObject obj = new JSONObject();
         obj.put("txnId", txnId);
-        obj.put("accountId", accountId);
+        obj.put("accountId", accountNumber);
         obj.put("txnType" , txnType);
         obj.put("amount", amount);
         return obj.toString();

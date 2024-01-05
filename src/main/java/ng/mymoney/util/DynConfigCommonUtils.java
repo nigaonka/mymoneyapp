@@ -13,7 +13,8 @@ public class DynConfigCommonUtils {
 
         DynamicStringProperty kafkaEndpointProp = DynamicPropertyFactory.getInstance()
                 .getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "kafka:29092");
-        DynamicStringProperty topicName = DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.TOPIC_NAME.getValue(), "usertopic");
+        DynamicStringProperty accTopicName = DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.ACC_TOPIC_NAME.getValue(), "accounttopic");
+        DynamicStringProperty txnTopicName = DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.TXN_TOPIC_NAME.getValue(), "txntopic");
 
         DynamicStringProperty groupId = DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.KAFKA_GROUPID.getValue(), "kafka_sandbox");
         DynamicStringProperty consumer_grp = DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.CONSUMER_GRP_ID.getValue(), "moneyapp_group");
@@ -25,9 +26,14 @@ public class DynConfigCommonUtils {
         return DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "kafka:29092").getValue();
     }
 
-    public static String getTopicName() {
-        return DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.TOPIC_NAME.getValue(), "usertopic").getValue();
+    public static String getAccTopicName() {
+        return DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.ACC_TOPIC_NAME.getValue(), "accounttopic").getValue();
     }
+
+    public static String getTxnTopicName() {
+        return DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.TXN_TOPIC_NAME.getValue(), "txntopic").getValue();
+    }
+
 
     public static String getGroupId() {
         return DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.KAFKA_GROUPID.getValue(), "kafka_sandbox").getValue();

@@ -25,7 +25,6 @@ public class MymoneyappApplication {
 			System.setProperty(URLConfigurationSource.CONFIG_URL, String.format("file://%s",
 					System.getenv(PROPERTIES_FILE)));
 		}
-		System.out.println("Property file loaded :  " + DynConfigCommonUtils.getGroupId());
 		log.info("Properties file loaded ");
 		SpringApplication.run(MymoneyappApplication.class, args);
 		log.info(" ======= Application initialized ====== ");

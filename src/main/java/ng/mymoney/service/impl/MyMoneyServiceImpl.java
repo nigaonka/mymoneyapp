@@ -9,10 +9,12 @@ import ng.mymoney.repository.AccountTxnRepo;
 import ng.mymoney.repository.BankDetailsRepo;
 import ng.mymoney.repository.CustomerAccountsRepo;
 import ng.mymoney.repository.CustomerRepo;
+import ng.mymoney.service.MessagingService;
 import ng.mymoney.service.MyMoneyService;
 import ng.mymoney.util.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,17 +22,36 @@ import java.util.List;
 @Service
 public class MyMoneyServiceImpl implements MyMoneyService {
 
-    BankDetailsRepo bankDetailsRepo;
-    CustomerRepo customerRepo;
-    CustomerAccountsRepo customerAccountsRepo;
-    AccountTxnRepo accountTxnRepo;
-
     private static final Logger log = LoggerFactory.getLogger(MyMoneyServiceImpl.class);
-    public MyMoneyServiceImpl(BankDetailsRepo bankDetailsRepo, CustomerRepo customerRepo, CustomerAccountsRepo custRepo, AccountTxnRepo txnRepo) {
-        this.bankDetailsRepo = bankDetailsRepo;
+    BankDetailsRepo bankDetailsRepo;
+    private CustomerRepo customerRepo;
+    private CustomerAccountsRepo customerAccountsRepo;
+    private AccountTxnRepo accountTxnRepo;
+    private MessagingService messagingService;
+
+    @Autowired
+    public void setCustomerRepo(CustomerRepo customerRepo) {
         this.customerRepo = customerRepo;
-        this.customerAccountsRepo = custRepo;
-        this.accountTxnRepo = txnRepo;
+    }
+
+    @Autowired
+    public void setBankDetailsRepo(BankDetailsRepo bankDetailsRepo) {
+        this.bankDetailsRepo = bankDetailsRepo;
+    }
+
+    @Autowired
+    public void setCustomerAccountsRepo(CustomerAccountsRepo customerAccountsRepo) {
+        this.customerAccountsRepo = customerAccountsRepo;
+    }
+
+    @Autowired
+    public void setAccountTxnRepo(AccountTxnRepo accountTxnRepo) {
+        this.accountTxnRepo = accountTxnRepo;
+    }
+
+    @Autowired
+    public void setMessagingService(MessagingService messagingService) {
+        this.messagingService = messagingService;
     }
 
     @Override
@@ -40,6 +61,7 @@ public class MyMoneyServiceImpl implements MyMoneyService {
             return "Error: " + bankDetails.getBankName() + " already exist ";
         } else {
             bankDetailsRepo.save(bankDetails);
+            messagingService.publishMessageToKafka(bankDetails);
             return bankDetails.getBankName() + " created successfully";
         }
     }
@@ -51,6 +73,7 @@ public class MyMoneyServiceImpl implements MyMoneyService {
             return "Customer already exists";
         } else {
             customerRepo.save(customer);
+
             return customer.getCustomerFirstName() + " created successfully";
         }
     }
@@ -97,8 +120,8 @@ public class MyMoneyServiceImpl implements MyMoneyService {
     @Override
     public String createCustomerAccounts(CustomerAccounts customerAccounts) {
         log.info("Creating customer accounts");
-            customerAccountsRepo.save(customerAccounts);
-            return "Customer account number " + customerAccounts.getAccountNumber() + " created successfully";
+        customerAccountsRepo.save(customerAccounts);
+        return "Customer account number " + customerAccounts.getAccountNumber() + " created successfully";
     }
 
     @Override

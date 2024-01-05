@@ -15,7 +15,7 @@ import java.util.Properties;
 
 
 @Slf4j
-public class KafkaStreamProcessor {
+public class AccountStreamProcessor {
 
     private Properties streamingProperties;
 
@@ -27,10 +27,10 @@ public class KafkaStreamProcessor {
 
     private ProcessorSupplier<String, byte[]> processorSupplier;
 
-    public KafkaStreamProcessor(Properties streamingProperties,
-                                ProcessorSupplier<String, byte[]> processorSupplier) {
+    public AccountStreamProcessor(Properties streamingProperties,
+                                  ProcessorSupplier<String, byte[]> processorSupplier) {
         this.streamingProperties = streamingProperties;
-        this.inputTopic = DynConfigCommonUtils.getTopicName();
+        this.inputTopic = DynConfigCommonUtils.getAccTopicName();
         this.processorSupplier = processorSupplier;
     }
 
@@ -45,9 +45,10 @@ public class KafkaStreamProcessor {
             streams = new KafkaStreams(topology, streamingProperties);
             handleClosingException();
             streams.start();
-            log.info("KStream processor started");
+            log.info("AccountStreamProcessor started...");
         }catch (Exception exception){
             exception.printStackTrace();
+            log.error(exception.getMessage());
         }
     }
 

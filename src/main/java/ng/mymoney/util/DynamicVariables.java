@@ -8,7 +8,9 @@ public enum DynamicVariables {
 
 
     KAFKA_ENDPOINT("kafka_broker"),
-    TOPIC_NAME("topic_name"),
+    ACC_TOPIC_NAME("acc_topic_name"),
+
+    TXN_TOPIC_NAME("txn_topic_name"),
 
     KAFKA_GROUPID("group_id"),
 

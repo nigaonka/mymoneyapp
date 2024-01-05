@@ -8,8 +8,13 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @Column(name="customerId")
     private int customerId;
+
+    @Column(name="customerFName")
     private String customerFirstName;
+
+    @Column(name = "customerLName")
     private String customerLastName;
 
     /**
