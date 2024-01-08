@@ -32,17 +32,19 @@ CREATE TABLE `bankdetails` (
     CHANGE COLUMN `accountNumber` `accountNumber` INT NOT NULL ,
     ADD UNIQUE INDEX `accountNumber_UNIQUE` (`accountNumber` ASC) VISIBLE;
     ;
-      ALTER TABLE `mymoney_db`.`customer_account`
-      ADD CONSTRAINT `fk_bankId`
-        FOREIGN KEY (`bankId`)
-        REFERENCES `mymoney_db`.`bankdetails` (`bankId`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-      ADD CONSTRAINT `fk_customerId`
-        FOREIGN KEY (`customerId`)
-        REFERENCES `mymoney_db`.`customer_info` (`customerId`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION;
+
+     CREATE TABLE `customer_account` (
+        `id` int NOT NULL AUTO_INCREMENT,
+        `account_Number` int NOT NULL,
+        `bank_Id` int DEFAULT NULL,
+        `customer_Id` int DEFAULT NULL,
+        `account_Type` varchar(45) DEFAULT NULL,
+        PRIMARY KEY (`id`),
+        UNIQUE KEY `account_Number_UNIQUE` (`account_Number`),
+        KEY `fk_bankId_idx` (`bank_Id`),
+        KEY `fk_customerId_idx` (`customer_Id`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
         CREATE TABLE `mymoney_db`.`account_txn` (
           `txnId` INT NOT NULL,

@@ -4,16 +4,36 @@ package ng.mymoney.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table (name = "customer_account")
+@Table(name = "customer_account")
 public class CustomerAccounts {
 
+    @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
+    @Column(name = "accountNumber")
     int accountNumber;
+
+    @Column(name = "bankId")
     int bankId;
+
+    @Column(name = "customerId")
     int customerId;
+
+    @Column(name = "accountType")
     String accountType;
+
+    private CustomerAccounts() {
+
+    }
+
+    public CustomerAccounts(int id, int accountNumber, int bankId, int customerId) {
+        this.id = id;
+        this.accountNumber = accountNumber;
+        this.bankId = bankId;
+        this.customerId = customerId;
+    }
 
     public String getAccountType() {
         return accountType;
@@ -23,18 +43,8 @@ public class CustomerAccounts {
         this.accountType = accountType;
     }
 
-    private CustomerAccounts() {
-
-    }
     public int getId() {
         return id;
-    }
-
-    public CustomerAccounts(int id, int accountNumber, int bankId,int customerId) {
-        this.id = id;
-        this.accountNumber = accountNumber;
-        this.bankId = bankId;
-        this.customerId=customerId;
     }
 
     public void setId(int id) {

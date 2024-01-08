@@ -3,28 +3,33 @@ package ng.mymoney.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table (name = "bankdetails")
+@Table(name = "bankdetails")
 public class BankDetails {
 
 
+    @Column(name = "bank_Id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
-   private int bankId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int bankId;
+
+    @Column(name = "bankName")
     private String bankName;
+
+    @Column(name = "bankLocation")
     private String bankLocation;
 
     /**
      * Default private constructor
      */
-    private BankDetails(){
+    private BankDetails() {
 
     }
+
     public BankDetails(int bankId, String bankName, String bankLocation) {
         this.bankId = bankId;
         this.bankName = bankName;
         this.bankLocation = bankLocation;
     }
-
 
 
     public int getBankId() {

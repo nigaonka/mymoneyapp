@@ -9,12 +9,17 @@ import org.json.JSONObject;
 @Table(name = "account_txn")
 public class AccountTxn {
 
+    @Column(name = "txn_Id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     int txnId;
 
+    @Column(name = "accountNumber")
     int accountNumber;
+    @Column (name = "txnType")
     String txnType;
+
+    @Column(name = "amount")
     double amount;
 
     private AccountTxn(){
