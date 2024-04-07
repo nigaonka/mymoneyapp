@@ -15,40 +15,13 @@ import java.io.InputStreamReader;
 
 public class MessageProducerTest {
 
-
     public static void main(String[] args) {
 
-        try {
-            System.out.println("Starting messaging");
-            HttpClient client = null;
-            HttpPost post = null;
+        MessageProducerTest test = new MessageProducerTest();
+        //test.createCustomers(10);
+     //   test.createAccounts(10,10);
+        test.createTxn(10,10);
 
-            JSONObject jsonObject = null;
-            for (int i=1;i<=5;i++) {
-                 client = new DefaultHttpClient();
-                 post = new HttpPost("http://localhost:8080/kafka/publishMessage");
-                jsonObject= new JSONObject();
-                jsonObject.put("txnId", "100"+i);
-                jsonObject.put("userId", "100"+1);
-                jsonObject.put("accountId", "34567"+i);
-                jsonObject.put("txnType", "DR");
-                jsonObject.put("amount", "1234"+i);
-
-                StringEntity entity = new StringEntity(jsonObject.toString());
-                entity.setContentType("application/json");
-                post.setEntity(entity);
-                System.out.println("Message posted");
-                HttpResponse response = client.execute(post);
-
-
-            }
-
-
-            System.out.println("Finished ");
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
         }
 
 
@@ -88,6 +61,95 @@ public class MessageProducerTest {
 
 */
 
+    public void createCustomers(int numOfCusts) {
+
+        try {
+            System.out.println("Publishing customer info " +numOfCusts );
+            HttpClient client = null;
+            HttpPost post = null;
+
+            JSONObject jsonObject = null;
+            for (int i=1;i<=numOfCusts;i++) {
+                client = new DefaultHttpClient();
+                post = new HttpPost("http://localhost:8080/mymoney/createCustomer");
+                jsonObject= new JSONObject();
+                jsonObject.put("customerFirstName", "fName"+i);
+                jsonObject.put("customerLastName", "lName"+i);
+                StringEntity entity = new StringEntity(jsonObject.toString());
+                entity.setContentType("application/json");
+                post.setEntity(entity);
+                System.out.println("Message posted");
+                HttpResponse response = client.execute(post);
+            }
+            System.out.println("Finished ");
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void createAccounts(int numAcct, int startDigit){
+        try {
+            System.out.println("Publishing customer info " +numAcct );
+            HttpClient client = null;
+            HttpPost post = null;
+
+            JSONObject jsonObject = null;
+            int bankId = 1;
+            for (int i=1;i<=numAcct;i++) {
+                client = new DefaultHttpClient();
+                post = new HttpPost("http://localhost:8080/mymoney/createAccount");
+                jsonObject= new JSONObject();
+                jsonObject.put("accountNumber", +startDigit+i);
+                if(bankId ==1 )
+                    bankId=2;
+                else
+                    bankId=1;
+                jsonObject.put("bankId",bankId);
+                jsonObject.put("customerId", i);
+                jsonObject.put("accountType", "SB");
+                StringEntity entity = new StringEntity(jsonObject.toString());
+                entity.setContentType("application/json");
+                post.setEntity(entity);
+                System.out.println("Message posted");
+                HttpResponse response = client.execute(post);
+            }
+            System.out.println("Finished ");
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void createTxn(int numAcct, int startDigit){
+        try {
+            System.out.println("Publishing Txn info " +numAcct );
+            HttpClient client = null;
+            HttpPost post = null;
+
+            JSONObject jsonObject = null;
+            int bankId = 1;
+            for (int i=1;i<=numAcct;i++) {
+                client = new DefaultHttpClient();
+                post = new HttpPost("http://localhost:8080/mymoney/createTxn");
+                jsonObject= new JSONObject();
+                jsonObject.put("accountNumber", +startDigit+i);
+                jsonObject.put("txnType","CR");
+                jsonObject.put("amount", i+"00.00");
+                StringEntity entity = new StringEntity(jsonObject.toString());
+                entity.setContentType("application/json");
+                post.setEntity(entity);
+                System.out.println("Message posted");
+                HttpResponse response = client.execute(post);
+            }
+            System.out.println("Finished ");
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
 }

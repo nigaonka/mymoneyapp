@@ -3,7 +3,7 @@
 #WORKDIR /app
 #COPY build/libs/*.jar springrestapp.jar
 #ENTRYPOINT ["java","-jar","/springrestapp.jar"]
-FROM eclipse-temurin:17
+FROM eclipse-temurin:21
 #FROM docker.tivo.com/openjdk11-python3:alpine-jre
 
 COPY --chown=gradle:gradle . /home/gradle/src

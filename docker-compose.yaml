@@ -5,6 +5,7 @@ services:
     image: confluentinc/cp-zookeeper:7.4.3
     hostname: zookeeper
     container_name: zookeeper
+    tmpfs: "/datalog"
     ports:
       - "2181:2181"
     environment:
@@ -177,3 +178,28 @@ services:
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
 
+#Use below section to run app in docker deployment mode. Not for k8s deployment
+  mysql:
+    image: 'mysql:latest'
+    container_name: mysqldb
+    hostname: mysqldb
+    environment:
+      - 'MYSQL_DATABASE=mymoney_db'
+      - 'MYSQL_PASSWORD=root'
+      - 'MYSQL_ROOT_PASSWORD=root'
+    ports:
+      - '3306:3306'
+
+
+  my-app:
+    image: nityanandgaonkar/ngaonkar:latest
+    container_name: mymoneyapp
+    depends_on:
+      - mysql
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: 'broker:29092'
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/mymoney_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - '8080:8080'

@@ -1,14 +1,13 @@
-package ng.mymoney.test;
+package ng.mymoney.controller;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MessageProducerTestTest {
-
+class MoneyServiceContorllerTest {
 
     @Test
-    void name() {
+    void testCreateCustomer() {
 
     }
 }

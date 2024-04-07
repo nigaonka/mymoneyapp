@@ -12,7 +12,7 @@ public class DynConfigCommonUtils {
     public static void initializeDynConfig() {
 
         DynamicStringProperty kafkaEndpointProp = DynamicPropertyFactory.getInstance()
-                .getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "kafka:29092");
+                .getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "broker:29092");
         DynamicStringProperty accTopicName = DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.ACC_TOPIC_NAME.getValue(), "accounttopic");
         DynamicStringProperty txnTopicName = DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.TXN_TOPIC_NAME.getValue(), "txntopic");
 
@@ -23,7 +23,7 @@ public class DynConfigCommonUtils {
     }
 
     public static String getKafkaEndpoint() {
-        return DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "kafka:29092").getValue();
+        return DynamicPropertyFactory.getInstance().getStringProperty(DynamicVariables.KAFKA_ENDPOINT.getValue(), "broker:29092").getValue();
     }
 
     public static String getAccTopicName() {
